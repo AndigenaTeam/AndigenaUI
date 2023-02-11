@@ -1,8 +1,7 @@
 import React from "react";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import 'jquery/dist/jquery.min'
-import '@floating-ui/react'
+import 'jquery/dist/jquery.min';
 import 'bootstrap/dist/js/bootstrap.min';
 import 'react-toastify/dist/ReactToastify.css';
 import Particles from "react-tsparticles";
