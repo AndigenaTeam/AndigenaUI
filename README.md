@@ -9,6 +9,19 @@ You are free to fork and modify the UI to your liking after you build it for pro
 **2.** Clone the repository and place `/public` directory in `gateserver`'s root directory.
 #### **Option 2 is recommended if you are not experianced with compiling and just want to use this UI.**
 
+## Preview
+<details>
+<summary>Register page</summary>
+
+![register page](./previews/register.png)
+</details>
+
+<details>
+<summary>ForgetPassword page</summary>
+
+![forgetpassword page](./previews/forgetPassword.png)
+</details>
+
 ## Packages
 - [ReactJS](https://reactjs.org)
 - [JQuery](https://jquery.com/)
