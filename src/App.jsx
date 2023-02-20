@@ -26,10 +26,10 @@ export default class App extends React.Component {
   render() {
     return(
         <>
-          <Particles
+          /*<Particles
               id={"particles"}
               init={this.particlesInit}
-              options={this.particlesConfig} />
+              options={this.particlesConfig} />*/
           <div className="d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
             { this.state.page === 'register' ? <Register navigation={this.navigation}/> : null }
             {this.state.page === 'forgetPassword' ? <ForgetPassword navigation={this.navigation}/> : null }
@@ -54,7 +54,8 @@ export default class App extends React.Component {
   }
 
   async particlesInit(engine) {
-    await loadFull(engine);
+    return;
+    //await loadFull(engine);
   }
 
 }

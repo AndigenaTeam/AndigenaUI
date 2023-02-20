@@ -22,7 +22,7 @@ export default class Register extends React.Component {
                     </div>
 
                     <div className="input-group mb-3">
-                        <span className="input-group-text fs-6"><i className="bi bi-envelope-at-fill"></i></span>
+                        <span className="input-group-text fs-3"><i className="bi bi-envelope-at-fill"></i></span>
                         <div className="form-floating">
                             <input type="email" className="form-control" id="emailr" placeholder="Email" required={true}/>
                             <label htmlFor="emailr"><span className="text-danger">*</span>&nbsp;Email</label>

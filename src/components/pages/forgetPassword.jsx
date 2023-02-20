@@ -15,7 +15,7 @@ export default class ForgetPassword extends React.Component {
                 <form onSubmit={event => this.forgetPassword(event)}>
 
                     <div className="input-group mb-3">
-                        <span className="input-group-text fs-6"><i className="bi bi-envelope-at-fill"></i></span>
+                        <span className="input-group-text fs-3"><i className="bi bi-envelope-at-fill"></i></span>
                         <div className="form-floating">
                             <input type="email" className="form-control" id="emailf" placeholder="Email" required={true}/>
                             <label htmlFor="emailf"><span className="text-danger">*</span>&nbsp;Email</label>
