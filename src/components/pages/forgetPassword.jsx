@@ -7,6 +7,7 @@ export default class ForgetPassword extends React.Component {
         super(props);
 
         this.forgetPassword = this.forgetPassword.bind(this)
+        this.requestCode = this.requestCode.bind(this)
     }
 
     render() {
@@ -23,6 +24,15 @@ export default class ForgetPassword extends React.Component {
                     </div>
 
                     <div className="input-group mb-3">
+                        <span className="input-group-text fs-3"><i className="bi bi-shield-lock-fill"></i></span>
+                        <div className="form-floating">
+                            <input type="number" min={0} className="form-control" id="emailcode" placeholder="Verification code" required={true}/>
+                            <label htmlFor="emailcode"><span className="text-danger">*</span>&nbsp;Verification code</label>
+                        </div>
+                        <button type={'button'} onClick={event => this.requestCode(event)} id="forgetBtnCode" className={"btn btn-outline-success fs-5 d-inline"}><i className={"bi bi-send-fill"}></i></button>
+                    </div>
+
+                    <div className="input-group mb-3">
                         <button type={'submit'} id="forgetBtn" className={"btn btn-outline-success w-100 fs-5"}><i className={"bi bi-send-fill"}></i>&nbsp;Forget password</button>
                     </div>
                     <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} newestOnTop={true} closeOnClick={true} rtl={false} pauseOnFocusLoss={true} draggable={false} pauseOnHover={true} theme={"colored"}/>
@@ -36,25 +46,72 @@ export default class ForgetPassword extends React.Component {
 
         try {
             const eml = document.getElementById('emailf').value;
+            const ec = document.getElementById('emailcode').value;
 
             $.ajax({
-                url: `/Api/forget_by_email`,
+                url: `http://localhost:669/Api/forget_by_email`,
                 method: 'POST',
                 dataType: 'json',
                 crossOrigin: false,
                 data: {
                     email: eml,
+                    code: ec,
+                    state: "verifycoderesp"
+                },
+                success: function (resp) {
+                    if (resp.code === -1) {
+                        toast.error("Verification code invalid or email does not exist!", {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
+                    }
+                },
+                fail: function () {
+                    toast.error("Unexpected error occurred! fail", {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
                 }
-            }).done(function () {
-                window.location.href = `uniwebview://close`
-                toast.success("Please check your email to reset your password.", {
-                    position: toast.POSITION.BOTTOM_RIGHT
-                });
-            }).fail(function () {
-                toast.error("Unexpected error occurred!", {
-                    position: toast.POSITION.BOTTOM_RIGHT
-                });
             })
+
+            this.props.setForgetEmail(eml)
+            this.props.navigation('forgetPassword2');
+        } catch (e) {
+            console.log(e)
+            toast.error("Unexpected error occurred!", {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+        }
+    }
+
+    requestCode(event) {
+        event.preventDefault()
+
+        try {
+            const eml = document.getElementById('emailf').value;
+
+            if (eml) {
+                $.ajax({
+                    url: `http://localhost:669/Api/forget_by_email`,
+                    method: 'POST',
+                    dataType: 'json',
+                    crossOrigin: false,
+                    data: {
+                        email: eml,
+                        state: "verifycodereq"
+                    }
+                }).done(function () {
+                    toast.success("Please check your email to reset your password.", {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
+                }).fail(function () {
+                    toast.error("Unexpected error occurred!", {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
+                })
+            } else {
+                toast.error("Email field is required!", {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+            }
         } catch (e) {
             toast.error("Unexpected error occurred!", {
                 position: toast.POSITION.BOTTOM_RIGHT

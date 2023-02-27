@@ -27,7 +27,7 @@ You are free to fork and modify the UI to your liking after you build it for pro
 - [JQuery](https://jquery.com/)
 - [ReactToastify](https://www.npmjs.com/package/react-toastify)
 - [Bootstrap & BootstrapIcons](https://getbootstrap.com)
-- [ReactTSParticles & TSParticles](https://www.npmjs.com/package/react-tsparticles)
+- [ReactTSParticles & TSParticles](https://www.npmjs.com/package/react-tsparticles) **OPTIONAL (lags ingame browser af)**
 
 ## Contributing
 If you wish to contribute feel free to fork this repository and make a Pull Request.
