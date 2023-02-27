@@ -1,0 +1,9 @@
+{
+  "short_name": "andigenaui",
+  "name": "andigenaui",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#fff",
+  "background_color": "#161a1c"
+}
