@@ -48,32 +48,34 @@ export default class ForgetPassword extends React.Component {
             const eml = document.getElementById('emailf').value;
             const ec = document.getElementById('emailcode').value;
 
-            $.ajax({
-                url: `http://localhost:669/Api/forget_by_email`,
-                method: 'POST',
-                dataType: 'json',
-                crossOrigin: false,
-                data: {
-                    email: eml,
-                    code: ec,
-                    state: "verifycoderesp"
+            fetch(`/Api/forget_by_email`, {
+                    method: 'POST',
+                    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        email: eml,
+                        code: ec,
+                        state: "verifycoderesp"
+                    }),
                 },
-                success: function (resp) {
-                    if (resp.code === -1) {
-                        toast.error("Verification code invalid or email does not exist!", {
-                            position: toast.POSITION.BOTTOM_RIGHT
-                        });
-                    }
-                },
-                fail: function () {
-                    toast.error("Unexpected error occurred! fail", {
+            ).then(async res => {
+                let data = await res.json()
+                console.log(data)
+                if (data.code === -1) {
+                    toast.error(`${data.message}`, {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
+                } else {
+                    this.props.setForgetEmail(eml)
+                    this.props.navigation('forgetPassword2');
+                    toast.success("Please check your email to reset your password.", {
                         position: toast.POSITION.BOTTOM_RIGHT
                     });
                 }
+            }).catch(e => {
+                toast.error(`${e}`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             })
-
-            this.props.setForgetEmail(eml)
-            this.props.navigation('forgetPassword2');
         } catch (e) {
             console.log(e)
             toast.error("Unexpected error occurred!", {
@@ -90,7 +92,7 @@ export default class ForgetPassword extends React.Component {
 
             if (eml) {
                 $.ajax({
-                    url: `http://localhost:669/Api/forget_by_email`,
+                    url: `/Api/forget_by_email`,
                     method: 'POST',
                     dataType: 'json',
                     crossOrigin: false,
@@ -98,10 +100,16 @@ export default class ForgetPassword extends React.Component {
                         email: eml,
                         state: "verifycodereq"
                     }
-                }).done(function () {
-                    toast.success("Please check your email to reset your password.", {
-                        position: toast.POSITION.BOTTOM_RIGHT
-                    });
+                }).done(function (resp) {
+                    if (resp.code === -1) {
+                        toast.error(`${resp.message}`, {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
+                    } else {
+                        toast.success("Please check your email to reset your password.", {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
+                    }
                 }).fail(function () {
                     toast.error("Unexpected error occurred!", {
                         position: toast.POSITION.BOTTOM_RIGHT

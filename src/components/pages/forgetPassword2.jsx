@@ -58,7 +58,6 @@ export default class ForgetPassword2 extends React.Component {
                     state: 'resetpassword'
                 }
             }).done(function () {
-                window.location.href = `uniwebview://close`
                 toast.success("Password has been reset, you can close this window.", {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
