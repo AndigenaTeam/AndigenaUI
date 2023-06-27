@@ -1,6 +1,6 @@
 import React from "react";
 import {toast, ToastContainer} from "react-toastify";
-import $ from "jquery";
+import PasswordValidator from "password-validator";
 
 export default class ForgetPassword extends React.Component {
     constructor(props) {
@@ -46,38 +46,55 @@ export default class ForgetPassword extends React.Component {
 
         try {
             const eml = document.getElementById('emailf').value;
-            const ec = document.getElementById('emailcode').value;
+            const ec = document.getElementById('emailcode');
 
-            fetch(`/Api/forget_by_email`, {
-                    method: 'POST',
-                    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        email: eml,
-                        code: ec,
-                        state: "verifycoderesp"
-                    }),
-                },
-            ).then(async res => {
-                let data = await res.json()
-                console.log(data)
-                if (data.code === -1) {
-                    toast.error(`${data.message}`, {
-                        position: toast.POSITION.BOTTOM_RIGHT
-                    });
-                } else {
-                    this.props.setForgetEmail(eml)
-                    this.props.navigation('forgetPassword2');
-                    toast.success("Please check your email to reset your password.", {
-                        position: toast.POSITION.BOTTOM_RIGHT
-                    });
-                }
-            }).catch(e => {
-                toast.error(`${e}`, {
+            let validator = new PasswordValidator().is().min(6, "Code must be minimum 6 characters!").is().max(6, "Code can not be longer then 420 characters!").has().digits(6, "Code must be all digits!").has().not().spaces();
+            const verifycode = validator.validate(ec.value, {details: true});
+
+            if (verifycode.length >= 1) {
+                let errors = [];
+                verifycode.forEach(e => {
+                    errors.push(e.message);
+                })
+                toast.error(errors.join("\n"), {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
-            })
+            }
+
+            if (verifycode.length === 0) {
+                fetch(`/Api/forget_by_email`, {
+                        method: 'POST',
+                        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            email: eml,
+                            code: ec.value,
+                            state: "verifycoderesp"
+                        }),
+                    },
+                ).then(async res => {
+                    let data = await res.json()
+                    if (data.code === -1) {
+                        toast.error(`${data.message}`, {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
+                    } else {
+                        this.props.setForgetEmail(eml)
+                        this.props.navigation('forgetPassword2');
+                        toast.success("Please check your email to reset your password.", {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
+                    }
+                }).catch(() => {
+                    toast.error(`Unexpected error occurred!`, {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
+                })
+            } else {
+                toast.error("Code is invalid!", {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+            }
         } catch (e) {
-            console.log(e)
             toast.error("Unexpected error occurred!", {
                 position: toast.POSITION.BOTTOM_RIGHT
             });
@@ -86,23 +103,22 @@ export default class ForgetPassword extends React.Component {
 
     requestCode(event) {
         event.preventDefault()
-
         try {
             const eml = document.getElementById('emailf').value;
 
             if (eml) {
-                $.ajax({
-                    url: `/Api/forget_by_email`,
-                    method: 'POST',
-                    dataType: 'json',
-                    crossOrigin: false,
-                    data: {
-                        email: eml,
-                        state: "verifycodereq"
-                    }
-                }).done(function (resp) {
-                    if (resp.code === -1) {
-                        toast.error(`${resp.message}`, {
+                fetch(`/Api/forget_by_email`, {
+                        method: 'POST',
+                        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            email: eml,
+                            state: "verifycodereq"
+                        }),
+                    },
+                ).then(async res => {
+                    let data = await res.json()
+                    if (data.code === -1) {
+                        toast.error(`${data.message}`, {
                             position: toast.POSITION.BOTTOM_RIGHT
                         });
                     } else {
@@ -110,8 +126,8 @@ export default class ForgetPassword extends React.Component {
                             position: toast.POSITION.BOTTOM_RIGHT
                         });
                     }
-                }).fail(function () {
-                    toast.error("Unexpected error occurred!", {
+                }).catch(() => {
+                    toast.error(`Unexpected error occurred!`, {
                         position: toast.POSITION.BOTTOM_RIGHT
                     });
                 })

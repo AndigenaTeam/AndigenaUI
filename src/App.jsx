@@ -1,13 +1,14 @@
 import React from "react";
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import 'bootstrap/dist/css/bootstrap.css';
 import 'jquery/dist/jquery.min';
 import 'bootstrap/dist/js/bootstrap.min';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Register from "./components/pages/register";
 import ForgetPassword from "./components/pages/forgetPassword";
 import ForgetPassword2 from "./components/pages/forgetPassword2";
+//import Announcement from "./components/pages/announcement";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -41,6 +42,7 @@ export default class App extends React.Component {
     let page = window.location.href
     if (page.includes('#/register')) return this.setState({page: 'register'});
     if (page.includes('#/forgetPassword')) return this.setState({page: 'forgetPassword'});
+    //if (page.includes("/hk4e/announcement/index.html")) return this.setState({page: 'bulletin'})
   }
 
   navigation(page) {

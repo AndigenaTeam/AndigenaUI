@@ -1,5 +1,5 @@
 import React from "react";
-import $ from 'jquery';
+import PasswordValidator from 'password-validator';
 import { ToastContainer, toast } from 'react-toastify';
 
 export default class Register extends React.Component {
@@ -32,7 +32,7 @@ export default class Register extends React.Component {
                     <div className="input-group mb-3">
                         <span className="input-group-text fs-3"><i className="bi bi-shield-lock-fill"></i></span>
                         <div className="form-floating">
-                            <input type="password" className="form-control" minLength="8" maxLength="69" id="password" placeholder="Password" required={true}/>
+                            <input type="password" className="form-control" minLength="8" maxLength="30" id="password" placeholder="Password" required={true}/>
                             <label htmlFor="password"><span className="text-danger">*</span>&nbsp;Password</label>
                         </div>
                     </div>
@@ -40,7 +40,7 @@ export default class Register extends React.Component {
                     <div className="input-group mb-3">
                         <span className="input-group-text fs-3"><i className="bi bi-shield-lock-fill"></i></span>
                         <div className="form-floating">
-                            <input type="password" className="form-control" minLength="8" maxLength="69" id="passwordc" placeholder="Confirm password" required={true}/>
+                            <input type="password" className="form-control" minLength="8" maxLength="30" id="passwordc" placeholder="Confirm password" required={true}/>
                             <label htmlFor="passwordc"><span className="text-danger">*</span>&nbsp;Confirm Password</label>
                         </div>
                     </div>
@@ -60,41 +60,71 @@ export default class Register extends React.Component {
         try {
             const user = document.getElementById('username').value;
             const eml = document.getElementById('emailr').value;
-            const pass = document.getElementById('password').value;
-            const passc = document.getElementById('passwordc').value;
+            const pass = document.getElementById('password');
+            const passc = document.getElementById('passwordc');
 
-            if (pass === passc && pass.length >= 8 && passc.length >= 8) {
-                // is_crypto=true&not_login=0&email=tujigufmizswuqstjt%40tmmbt.com&password=????&captcha=000000
+            let validator = new PasswordValidator().is().min(8, "Password must be minimum 8 characters!").is().max(30, "Password can not be longer then 420 characters!").has().digits(2, "Password must contain at least 2 numbers!").has().uppercase(1, "Password must contain at least 1 uppercase letter!").has().not().spaces().is().not().oneOf(['Passw0rd', 'Password123'], "Password you provided is insecure!");
+            const passvalid = validator.validate(pass.value, {details: true});
+            const passvalid2 = validator.validate(passc.value, {details: true});
 
-                $.ajax({
-                    url: `/Api/regist_by_email`,
-                    method: 'POST',
-                    dataType: 'json',
-                    crossOrigin: false,
-                    data: {
-                        is_crypto: true,
-                        not_login: 0,
-                        username: user,
-                        email: eml,
-                        password: pass,
-                        captcha: 0
-                    }
-                }).done(function () {
-                    window.location.href = `uniwebview://close`
-                    toast.success("Successfully registred, you can now close this window.", {
-                        position: toast.POSITION.BOTTOM_RIGHT
-                    });
-                }).fail(function () {
+            if (passvalid.length >= 1) {
+                let errors = [];
+                passvalid.forEach(e => {
+                    errors.push(e.message);
+                })
+                toast.error(errors.join("\n"), {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+            }
+
+            if (passvalid2.length >= 1) {
+                let errors = [];
+                passvalid.forEach(e => {
+                    errors.push(e.message);
+                })
+                return toast.error(errors.join("\n"), {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+            }
+
+            if (pass.value === passc.value) {
+                if (passvalid.length === 0 && passvalid2.length === 0) {
+                    // is_crypto=true&not_login=0&email=tujigufmizswuqstjt%40tmmbt.com&password=????&captcha=000000
+                    fetch(`/Api/regist_by_email`, {
+                            method: 'POST',
+                            headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+                            body: JSON.stringify({
+                                is_crypto: true,
+                                not_login: 0,
+                                username: user,
+                                email: eml,
+                                password: pass.value,
+                                captcha: 0
+                            }),
+                        },
+                    ).then(async res => {
+                        let data = await res.json();
+                        if (data.retcode === -1) {
+                            toast.error(`${data.message}`, {
+                                position: toast.POSITION.BOTTOM_RIGHT
+                            });
+                        } else {
+                            window.location.href = `uniwebview://register?token=${data.data.account_info.weblogin_token}`
+                        }
+                    }).catch(() => {
+                        toast.error("Unexpected error occurred!", {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
+                    })
+                } else {
                     toast.error("Unexpected error occurred!", {
                         position: toast.POSITION.BOTTOM_RIGHT
                     });
-                })
-            } else {
-                if (pass !== passc) {
-                    toast.error("Passwords do not match!", {
-                        position: toast.POSITION.BOTTOM_RIGHT
-                    });
                 }
+            } else {
+                toast.error("Passwords do not match!", {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             }
         } catch (e) {
             toast.error("Unexpected error occurred!", {
