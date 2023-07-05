@@ -5,9 +5,7 @@ You are free to fork and modify the UI to your liking after you build it for pro
 
 ## How to use in production
 
-**1.** Build for production with your changes and place contents from `/build` into `/public` in `gateserver`'s root directory.\
-**2.** Clone the repository and place `/public` directory in `gateserver`'s root directory.
-#### **Option 2 is recommended if you are not experianced with compiling and just want to use this UI.**
+**1.** Build for production with your (optional) changes and place contents from `/build` into `/public` in `gateserver`'s root directory.
 
 ## Preview
 <details>
@@ -31,7 +29,7 @@ You are free to fork and modify the UI to your liking after you build it for pro
 
 ## Integrate in your server
 1. `git clone https://github.com/AndigenaTeam/AndigenaUI.git`
-2. Move `/public` into your project directory (root or wherever) or build yourself
+2. Move `/build` directory contents into your project directory (root or wherever) after you build from source.
 3. Make 2 **POST** endpoints `/Api/regist_by_email` and `/Api/forget_by_email` (check [AndigenaGate](https://github.com/AndigenaTeam/andigenagate/blob/main/routes/registerRoutes.js)'s implementation for references)
 
 ## Contributing
