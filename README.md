@@ -21,6 +21,12 @@ You are free to fork and modify the UI to your liking after you build it for pro
 ![forgetpassword page2](./previews/forgetPassword2.png)
 </details>
 
+<details>
+<summary>Announcement page</summary>
+
+![announcement page](./previews/bulletin.png)
+</details>
+
 ## Packages
 - [ReactJS](https://reactjs.org)
 - [JQuery](https://jquery.com/)

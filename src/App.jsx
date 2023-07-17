@@ -1,7 +1,7 @@
 import React from "react";
 import 'jquery/dist/jquery.min';
 import 'bootstrap/dist/js/bootstrap.min';
-import 'bootstrap/dist/css/bootstrap.min.css'
+import './assets/css/bs-isolator.scss'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,15 +24,16 @@ export default class App extends React.Component {
     this.setForgetEmail = this.setForgetEmail.bind(this)
   }
 
-  //           { this.state.page === 'bulletin' ? <Announcement/> : null }
   render() {
     return(
         <>
+          <div className={"fuckyou"}>
             <div className="d-flex justify-content-center align-items-center" style={{height: '90vh'}}>
               { this.state.page === 'register' ? <Register navigation={this.navigation}/> : null }
               { this.state.page === 'forgetPassword' ? <ForgetPassword navigation={this.navigation} setForgetEmail={this.setForgetEmail}/> : null }
               { this.state.page === 'forgetPassword2' ? <ForgetPassword2 navigation={this.navigation} getForgetEmail={this.getForgetEmail}/> : null }
             </div>
+          </div>
           { this.state.page === 'bulletin' ? <Announcement/> : null }
         </>
   )

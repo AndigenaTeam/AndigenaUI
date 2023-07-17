@@ -1,0 +1,98 @@
+// Configuration, bootstrap native
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/variables-dark";
+@import "../../../node_modules/bootstrap/scss/maps";
+@import "../../../node_modules/bootstrap/scss/mixins";
+@import "../../../node_modules/bootstrap/scss/utilities";
+
+@import "../../../node_modules/bootstrap/scss/root";
+
+// === cursed fix ===
+
+// fix for coloring of bootstrap affected pages and some details, taken from "bootstrap/scss/reboot"
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// Root
+// Ability to the value of the root font sizes, affecting the value of `rem`.
+// null by default, thus nothing is generated.
+:root {
+  @if $font-size-root != null {
+    @include font-size(var(--#{$prefix}root-font-size));
+  }
+
+  @if $enable-smooth-scroll {
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+// Body
+// 1. Remove the margin in all browsers.
+// 2. As a best practice, apply a default `background-color`.
+// 3. Prevent adjustments of font size after orientation changes in iOS.
+// 4. Change the default tap highlight to be completely transparent in iOS.
+body {
+  margin: 0; // 1
+  font-family: var(--#{$prefix}body-font-family);
+  @include font-size(var(--#{$prefix}body-font-size));
+  font-weight: var(--#{$prefix}body-font-weight);
+  line-height: var(--#{$prefix}body-line-height);
+  color: var(--#{$prefix}body-color);
+  text-align: var(--#{$prefix}body-text-align);
+  background-color: var(--#{$prefix}body-bg); // 2
+  -webkit-text-size-adjust: 100%; // 3
+  -webkit-tap-highlight-color: rgba($black, 0); // 4
+}
+// === cursed fix ===
+
+// === bootstrap component wrapper ===
+.fuckyou {
+
+  // import full "bootstrap/scss/reboot" regardless of parts being previously added to goofy cursed fix bootstrap dependant pages
+  @import "../../../node_modules/bootstrap/scss/reboot";
+
+  // Layout & components, bootstrap native
+
+  @import "../../../node_modules/bootstrap/scss/type";
+  @import "../../../node_modules/bootstrap/scss/images";
+  @import "../../../node_modules/bootstrap/scss/containers";
+  @import "../../../node_modules/bootstrap/scss/grid";
+  @import "../../../node_modules/bootstrap/scss/tables";
+  @import "../../../node_modules/bootstrap/scss/forms";
+  @import "../../../node_modules/bootstrap/scss/buttons";
+  @import "../../../node_modules/bootstrap/scss/transitions";
+  @import "../../../node_modules/bootstrap/scss/dropdown";
+  @import "../../../node_modules/bootstrap/scss/button-group";
+  @import "../../../node_modules/bootstrap/scss/nav";
+  @import "../../../node_modules/bootstrap/scss/navbar";
+  @import "../../../node_modules/bootstrap/scss/card";
+  @import "../../../node_modules/bootstrap/scss/accordion";
+  @import "../../../node_modules/bootstrap/scss/breadcrumb";
+  @import "../../../node_modules/bootstrap/scss/pagination";
+  @import "../../../node_modules/bootstrap/scss/badge";
+  @import "../../../node_modules/bootstrap/scss/alert";
+  @import "../../../node_modules/bootstrap/scss/progress";
+  @import "../../../node_modules/bootstrap/scss/list-group";
+  @import "../../../node_modules/bootstrap/scss/close";
+  @import "../../../node_modules/bootstrap/scss/toasts";
+  @import "../../../node_modules/bootstrap/scss/modal";
+  @import "../../../node_modules/bootstrap/scss/tooltip";
+  @import "../../../node_modules/bootstrap/scss/popover";
+  @import "../../../node_modules/bootstrap/scss/carousel";
+  @import "../../../node_modules/bootstrap/scss/spinners";
+  @import "../../../node_modules/bootstrap/scss/offcanvas";
+  @import "../../../node_modules/bootstrap/scss/placeholders";
+}
+// === bootstrap component wrapper ===
+
+// Helpers, bootstrap native
+@import "../../../node_modules/bootstrap/scss/helpers";
+
+// Utilities, bootstrap native
+@import "../../../node_modules/bootstrap/scss/utilities/api";
