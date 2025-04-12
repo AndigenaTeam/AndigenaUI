@@ -1,5 +1,8 @@
 # AndigenaUI
 
+> [!TIP]
+> Everything moved to [here](https://repo.tukandev.com/Andigena)
+
 You are free to fork and modify the UI to your liking after you build it for production you can use it in Andigena.\
 **This UI can be rendered on any web server not just JavaScript/TypeScript based servers**
 
